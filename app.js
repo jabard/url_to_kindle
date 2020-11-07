@@ -39,18 +39,17 @@ app.all('/', async (req, res) => {
 
   logger.info(`(${pass}) requested (${url}) be sent to (${kindle_email})`);
 
-  let response = await url_to_kindle(url, email_config, kindle_email);
-  let status_code = 200;
-
-  if (response) {
+  const sent_to_kindle = await url_to_kindle(url, email_config, kindle_email);
+  if (sent_to_kindle) {
     logger.info(`(${pass})'s (${url}) was sent to (${kindle_email})`);
   } else {
     logger.error(`(${pass})'s (${url}) was NOT sent to (${kindle_email})`);
+  }
 
-    response = {
-      error: 'Something went wrong. Contact the Admin!'
-    }
-    status_code = 500;
+  const status_code = (sent_to_kindle ? 200 : 500);
+  const response = {
+    success: (sent_to_kindle ? `${url} was sent as a PDF to ${kindle_email}` : ''),
+    error: (sent_to_kindle ? '' : 'Something went wrong. Contact the Admin!')
   }
 
   return res.status(status_code).json(response);
