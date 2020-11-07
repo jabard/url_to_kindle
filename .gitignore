@@ -1,0 +1,11 @@
+.DS_Store
+jest/*
+coverage
+node_modules
+build/
+.env
+
+# Custom
+test.js
+test.pdf
+local.log
