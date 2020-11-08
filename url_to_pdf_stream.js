@@ -19,6 +19,12 @@ const url_to_pdf_stream = async (url) => {
         return false;
     }
 
+    if (!article || !article.title || !article.content) {
+        logger.error(`URL (${url}) produced a bad object`);
+
+        return false;
+    }
+
     const title = article.title;
     const content = article.content;
     // TODO: the header is not being displayed correct atm.
