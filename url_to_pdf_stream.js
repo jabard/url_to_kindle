@@ -25,20 +25,45 @@ const url_to_pdf_stream = async (url) => {
         return false;
     }
 
+    const style = `
+      <style>
+        body {
+          font-size: 160%;
+          padding: 0;
+        }
+        figure {
+          border: 1px black;
+          border-style: dashed;
+          text-align: center;
+        }
+        figcaption {
+          text-align: center;
+          font-style: italic;
+        }
+      </style>
+    `;
     const title = article.title;
-    const content = article.content;
-    // TODO: the header is not being displayed correct atm.
+    const content = `${style} ${article.content}`;
     const options = {
         printOptions: {
           displayHeaderFooter: true,
-          headerTemplate: `<div style='text-align: center;'>${title}</div>`
+          headerTemplate: `
+            <div class="text center" style="font-size: 14px; font-weight: 700;">
+              ${title}
+            </div>
+          `,
+          footerTemplate: `
+            <div class="text center" style="font-weight: 700;">
+              Page <span class="pageNumber"></span> of <span class="totalPages"></span>
+            </div>
+          `
         }
     };
 
     logger.info(`Extracting PDF stream for (${title})`);
 
     return await html_pdf
-        .create(content)
+        .create(content, options)
         .then(pdf => ({
             stream: pdf.toStream(),
             filename: `${title}.pdf`
