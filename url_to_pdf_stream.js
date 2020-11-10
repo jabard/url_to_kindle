@@ -1,4 +1,4 @@
-const { Readability } = require('./mozilla/readability/index.js');
+const { Readability } = require('@mozilla/readability');
 const { JSDOM } = require('jsdom');
 const logger = require('./logger');
 const html_pdf = require('html-pdf-chrome');
@@ -31,14 +31,11 @@ const url_to_pdf_stream = async (url) => {
           font-size: 160%;
           padding: 0;
         }
-        figure {
-          border: 1px black;
-          border-style: dashed;
-          text-align: center;
+        figure, img, figcaption {
+            text-align: center;
         }
         figcaption {
-          text-align: center;
-          font-style: italic;
+            font-style: italic;
         }
       </style>
     `;
